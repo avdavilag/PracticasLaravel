@@ -7,16 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profession extends Model
 {
+    protected $table='professions';
+
     use HasFactory;
     protected $fillable=[
         'tittle',
+        'selectable'
     ];
 
 
 
 
-    public function users(){
-        return $this->hasMany(User::class);
+    public function usersProfile(){
+        return $this->hasMany(UserProfile::class);
     }
 }
 

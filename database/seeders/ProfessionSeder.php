@@ -14,15 +14,26 @@ class ProfessionSeder extends Seeder
      */
     public function run()
     {
+        DB::table('professions')->insert([
+            'tittle' => 'No tiene ninguna profesion',
+            'selectable'=> true
+        
+               ]);
         Profesion::create([
                     'tittle' => 'Desarrollador de videojuegos',
-            
+                    
                 ]);
         \App\Models\Profession::factory()->times(17)->create([            
         ]);
+//    Profesion::create([
+//         'id'=>0,
+//         'tittle' => 'No tiene ninguna profesion',
+//         'selectable'=> true
+//     ]);
 
 
 
+    
         //DB::table('professions')->truncate();
         // DB::insert('INSERT INTO professions (tittle) VALUES (:tittle)',[
         //     'tittle'=>'Desarrollador IOS']); se pueda ingresar asi tambien.

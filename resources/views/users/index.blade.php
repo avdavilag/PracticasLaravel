@@ -43,8 +43,8 @@
       </tbody>
       @endforeach
   </table>
- } @else{
-    <p>No hay Usuarios Registrados</p> }
+  @else
+    <p>No hay Usuarios Registrados</p> 
   @endif
 @endsection
 

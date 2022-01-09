@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -17,12 +18,13 @@ class User extends Authenticatable
      *
      * @var string[]
      */
+    protected $table='users';
+
     protected $fillable = [
         'name',
         'email',
         'password',
-        'profession_id'
-    ];
+        ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -55,8 +57,24 @@ class User extends Authenticatable
     protected $castss= [
         'is_admin' => 'boolean'
     ];
-
-    public function profession(){//Profession id
-        return $this->belongsTo(Profession::class);
+////Creacion de Usuario con Profile, mediante el Model..
+    // public static function createUser($data){
+    //     DB::transaction(function() use ($data){
+    //         $user=User::create([
+    //             'name' => $data['name'],
+    //             'email'=>$data['email'],
+    //             'password'=>$data['password'],
+    //             'profession_id'=>$data['profession_id']
+    //            ]);
+    //            $user->profile()->create([
+    //             'bio'=> $data['bio'],
+    //             'twitter'=>$data['twitter'],        
+    //            ]);
+    //        });         
+    // }    
+/////////////////////////////////////////////////////    
+ 
+    public function profile(){
+        return $this->hasOne(UserProfile::class);
     }
 }
