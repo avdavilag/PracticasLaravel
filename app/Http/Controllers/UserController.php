@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
-use App\Models\{Profession, User,UserProfile};
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\{Profession, Skill, User,UserProfile};
 use Dflydev\DotAccessData\Data;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class UserController extends Controller
     {
         //
        
-        $users=User::all();
+        $users=User::orderByDesc('created_at')->paginate(4);
        // dd($users);
         $title = 'Listado de usuarios';
 
@@ -31,7 +32,13 @@ class UserController extends Controller
 
         return view('users.index', compact('title', 'users'));
     }
+public function trashed(){
 
+    $users=User::onlyTrashed()->get();///Usuarios que se encuentra en papelera...
+    
+     $title = 'Listado de usuarios en papelera';
+     return view('users.index', compact('title', 'users'));
+}
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +48,11 @@ class UserController extends Controller
     {
         //
         $professions=Profession::orderBy('tittle','ASC')->get();
-        return view('users.create',compact('professions'));
+        $skills=Skill::orderBy('name','ASC')->get();
+        $roles=trans(('users.roles'));
+        $user=new User;
+        
+        return view('users.create',compact('professions','skills','roles','user'));
 
     }
 
@@ -110,14 +121,18 @@ class UserController extends Controller
     public function show(User $user)
     {
         $messague2="";
+        $Nprofession=$user->profile->profession_id;
         
+        $professionname = DB::table('professions')->where('id', $Nprofession)->value('tittle');
+    //    dd($professionname);
+
        // dd($user->profile->twitter);
         if($user->profile->twitter==null){
         $messague2="El usuario no tiene twitter";
-        return view('users.show', compact('user','messague2'));    
+        return view('users.show', compact('user','messague2','professionname'));    
         }else{
             $messague2="";
-            return view('users.show', compact('user','messague2'));
+            return view('users.show', compact('user','messague2','professionname'));
         }
         //
         // $user=User::findOrFail($user);///laravel transforma en una respuesta 404..
@@ -138,7 +153,10 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
-        return view('users.edit',['user'=>$user]);
+        $professions=Profession::orderBy('tittle','ASC')->get();
+        $skills=Skill::orderBy('name','ASC')->get();
+        $roles=trans(('users.roles'));
+        return view('users.edit',compact('professions','skills','roles','user'));
     }
 
     /**
@@ -148,32 +166,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $data=request()->validate([
-            'name'=> 'required',
-            'email'=>[
-            'required',
-            'email',
-             ValidationRule::unique('users')->ignore($user->id)],
-            'password'=>'required|min:5|max:10',
-            'profession_id'=>''
-
-        ],[
-            'name.required' => 'El campo nombre no puede estar en blanco',
-            'email.required' => 'Por favor ingresa un dirección valida',
-            'email.unique'=> 'Mil disculpas esta direccion de correo electronico ya esta registrada busca otra',
-            'password.required '=>'Recuerda la advertencia de contraseñas por favor'
-         ]);
-     
-        if($data['password']!=null){
-            $data['password']=bcrypt($data['password']);       
-        }else{
-            unset($data['password']);
-        }
-        $user->update($data);
-
-
+        // dd($request);
+       $request->update($user);
+        
         return redirect()->route('users.show',['user'=>$user]);
     }
 
@@ -183,10 +180,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+
+    public function trash(User $user)
     {
-        //
         $user->delete();
+        $user->profile()->delete();       
         return redirect()->route('users.index');
     }
+
+    public function destroy($id)
+    {
+        //
+        $user=User::onlyTrashed()->where('id',$id)->firstOrFail();
+        // abort_unless($user->trashed(),400);//Al menos si se aya 
+        //eliminado evitamos utilizar el forzar a eliminar... 
+        $user->forcedelete();//Fuerza a eliminar 
+        return redirect()->route('users.trashed');
+    }
+
+   
 }

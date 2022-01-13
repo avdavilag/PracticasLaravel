@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,15 @@ class User extends Authenticatable
      *
      * @var string[]
      */
+    use SoftDeletes;
     protected $table='users';
+    protected $guarded=[];
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
         ];
 
     /**
@@ -40,7 +44,7 @@ class User extends Authenticatable
         return static::where(compact('email'))->first();
     }
     public function isAdmin(){
-        return $this->is_admin;
+        return $this->role==='admin';
         //return $this->email==='suco19965@gmail.com';-> Pilas se queremos que solo un email pueda hacer administrador...
     }
 
@@ -55,7 +59,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     protected $castss= [
-        'is_admin' => 'boolean'
+        //'is_admin' => 'boolean'
     ];
 ////Creacion de Usuario con Profile, mediante el Model..
     // public static function createUser($data){
@@ -75,6 +79,12 @@ class User extends Authenticatable
 /////////////////////////////////////////////////////    
  
     public function profile(){
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(UserProfile::class)->withDefault([
+            'bio'=>'Recuerda no tienes una bio escrita'
+        ]);
+    }
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class,'user_skill');
     }
 }

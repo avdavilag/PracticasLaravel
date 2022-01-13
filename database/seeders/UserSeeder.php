@@ -34,9 +34,49 @@ class UserSeeder extends Seeder
         */            
       $user=\App\Models\User::factory()->create([
             // 'name'=>'Anderson Davila',
-            'email'=>'suco19965@gmail.com',
+            // 'email'=>'suco19965@gmail.com',
             'password'=>bcrypt('laravel'),            
-            'is_admin'=> true,
+            'role'=> 'user',
+        ]);
+
+        $user->profile()->create([
+            'bio'=>'Programador,profesor,editor,escritor,social media manager',
+            'profession_id'=>2,
+       
+        ]);
+
+
+        $user=\App\Models\User::factory()->create([
+            // 'name'=>'Anderson Davila',
+            // 'email'=>'',
+            'password'=>bcrypt('laravel'),            
+            'role'=> 'user',
+        ]);
+
+        $user->profile()->create([
+            'bio'=>'Programador,profesor,editor,escritor,social media manager',
+            'profession_id'=>3,
+       
+        ]);
+
+        $user=\App\Models\User::factory()->create([
+            // 'name'=>'Anderson Davila',
+            // 'email'=>'',
+            'password'=>bcrypt('laravel'),            
+            'role'=> 'user',
+        ]);
+
+        $user->profile()->create([
+            'bio'=>'Programador,profesor,editor,escritor,social media manager',
+            'profession_id'=>4,
+       
+        ]);
+
+        $user=\App\Models\User::factory()->create([
+            // 'name'=>'Anderson Davila',
+            // 'email'=>'',
+            'password'=>bcrypt('laravel'),            
+            'role'=> 'user',
         ]);
 
         $user->profile()->create([
@@ -44,11 +84,27 @@ class UserSeeder extends Seeder
             'profession_id'=>5,
        
         ]);
-        // \App\Models\User::factory(User::class,29)->create()->each(function ($user){
-        //     $user->profile()->create(
-        //         \App\Models\UserProfile::factory(\App\Models\UserProfile::class)->raw()
-        //     );
-        // });           
+
+        
+        $user=\App\Models\User::factory()->create([
+            // 'name'=>'Anderson Davila',
+            // 'email'=>'',
+            'password'=>bcrypt('laravel'),            
+            'role'=> 'user',
+        ]);
+
+        $user->profile()->create([
+            'bio'=>'Programador,profesor,editor,escritor,social media manager',
+            'profession_id'=>6,
+       
+        ]);
+       /// \App\Models\User::factory(User::class,29)->create()->each(function ($user){
+        
+        // \App\Models\User::factory(\App\Models\User::class,29)->create([
+        //     'role'=>'user',
+        // ]);
+        
+       // });           
 
 
 

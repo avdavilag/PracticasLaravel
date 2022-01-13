@@ -14,11 +14,7 @@ class Profession extends Model
         'tittle',
         'selectable'
     ];
-
-
-
-
-    public function usersProfile(){
+    public function profiles(){
         return $this->hasMany(UserProfile::class);
     }
 }

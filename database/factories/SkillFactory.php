@@ -14,7 +14,8 @@ class SkillFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=> $this->faker->sentence(3),
+
         ];
     }
 }

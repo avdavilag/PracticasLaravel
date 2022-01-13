@@ -30,22 +30,37 @@
           <td>{{$user->name}}</td>
           <td>{{$user->email}}</td>
           <td>
-              <form action="{{route('users.delete',$user)}}" method="POST">
-                @csrf
-                {{method_field('DELETE')}}
-                <a href="{{ route('users.show', [$user]) }}" class="btn btn-link"><span class="oi" data-glyph="eye"></span></a>
-                <a href="{{ route('users.edit', [$user]) }}" class="btn btn-link"><span class="oi" data-glyph="pencil"></span></a>
-                <button type="submit" class="btn btn-link"><span class="oi" data-glyph="trash"></span></button>
-            </form>
-
+            @if($user->trashed())
+            <form action="{{route('users.delete',$user)}}" method="POST">
+              @csrf
+              @method('DELETE')                
+        
+              <button type="submit" class="btn btn-link"><span class="oi" data-glyph="circle-x"></span></button>
+          </form>
+            @else
+            <form action="{{route('users.trash',$user)}}" method="POST">
+              @csrf
+              @method('PATCH')                
+              <a href="{{ route('users.show', [$user]) }}" class="btn btn-link"><span class="oi" data-glyph="eye"></span></a>
+              <a href="{{ route('users.edit', [$user]) }}" class="btn btn-link"><span class="oi" data-glyph="pencil"></span></a>
+              <button type="submit" class="btn btn-link"><span class="oi" data-glyph="trash"></span></button>
+          </form>
+            @endif
           </td>
         </tr>
       </tbody>
       @endforeach
   </table>
+<div>    
+    <div class="d-flex justify-content-between align-items-end mb-2">
+      <div class="form-group">        
+        {{$users->render('errors/shared.pagination')}}        
+    </div>                        
+</div>
   @else
     <p>No hay Usuarios Registrados</p> 
   @endif
+
 @endsection
 
 

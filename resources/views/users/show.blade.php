@@ -17,8 +17,14 @@
         </div>
         <div class="form-group">
     <h6 for="email">Correo Electronico:</h6>
-    <p class="form-control">Correo Electronico: {{$user->email}}</p>
+    <p class="form-control">{{$user->email}}</p>
     </div>
+    
+    <div class="form-group">
+        <h6 for="profesion">Profesión:</h6>
+    
+        <p class="form-control">{{$professionname}}</p>     
+        </div>
 
     <div class="form-group">
     <h6 for="bio">Bibliografia:</h6>
@@ -30,6 +36,8 @@
     
         <p class="form-control">{{$user->profile->twitter}},{{$messague2}}</p>     
         </div>
+
+        
         </div>
     </div>
 @endsection

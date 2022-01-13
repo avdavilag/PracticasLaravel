@@ -61,10 +61,10 @@
             <a class="nav-link active" aria-current="page" href="{{route('users.index')}}">Usuarios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link active" aria-current="page" href="{{route('professions.index')}}">Profesiones</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+            <a class="nav-link active" aria-current="page" href="{{route('skills.index')}}">Habilidades</a>
           </li>
         </ul>
         <form class="d-flex">
@@ -82,18 +82,18 @@
     <div class="col-8">
         @yield('content')
     </div>
-    <div class="col-4">
+    {{-- <div class="col-4">
        @section('sidebar')
        <h2> Barra Lateral</h2>                
        @show          
-    </div>
+    </div> --}}
   </div>       
 
 </main>
 
 <footer class="footer mt-auto py-3 bg-light">
   <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
+    <span class="text-muted">Elaborado por: EiVIDiYI.</span>
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

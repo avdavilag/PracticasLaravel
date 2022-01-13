@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserProfiles extends Migration
+class UserSkill extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,19 @@ class CreateUserProfiles extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
-            $table->id();
-            $table->string('bio',1000);
-            $table->string('twitter')->nullable();
-            $table->unsignedBigInteger('profession_id')->nullable();
-            $table->foreign('profession_id')
-            ->references('id')
-            ->on('professions')
-            ->onDelete('SET NULL');
+        Schema::create('user_skill', function (Blueprint $table) {
+            $table->increments('id'); // INTEGER UNSIGNED - AUTOINCREMENT
+        
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
             ->references('id')
             ->on('users')
             ->onDelete('CASCADE');
+            $table->unsignedInteger('skill_id');
+            $table->foreign('skill_id')->references('id')->on('skills');
+
+       
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -39,6 +36,7 @@ class CreateUserProfiles extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profiles');
+        //
+        Schema::dropIfExists('user_skill');
     }
 }
